@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Facades\Http;
 
 class AsaasService
@@ -23,7 +24,16 @@ class AsaasService
                 'mobilePhone' => $params['mobilePhone']
             ]);
 
-        return $response->json();
+        $response = $response->json();
+
+        $user = new User();
+        $user->name = $params['name'];
+        $user->cpfCnpj = $params['cpfCnpj'];
+        $user->mobilePhone = $params['mobilePhone'];
+        $user->customer = $response['id'];
+        $user->save();
+
+        return $response;
     }
 
     public function createPayment($params)
