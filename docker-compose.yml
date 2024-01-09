@@ -1,0 +1,55 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: user
+        uid: 1000
+      context: ./
+      dockerfile: Dockerfile
+    image: net
+    container_name: app
+    restart: unless-stopped
+    working_dir: /var/www/
+    environment:
+      ENVIRONMENT: docker
+    volumes:
+      - ./app/:/var/www
+    networks:
+      - net
+    links:
+      - nginx
+    ports:
+      - 6001:6001
+
+  nginx:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./app/:/var/www
+      - ./docker-compose/nginx:/etc/nginx/conf.d/
+      - ./docker-compose/certs:/etc/nginx/certs
+    networks:
+      - net
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=api
+      - MYSQL_USER=user
+      - MYSQL_PASSWORD=password
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - ./docker-compose/bd:/docker-entrypoint-initdb.d
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge
