@@ -14,4 +14,5 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/payment', '\App\Http\Controllers\InvoiceController@index');
 Route::post('/payment', '\App\Http\Controllers\InvoiceController@store');

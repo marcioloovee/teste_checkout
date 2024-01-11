@@ -1,3 +1,11 @@
+<?php
+
+$data = base64_decode(request('data'));
+$dataJson = json_decode($data);
+//dd($dataJson);
+
+?>
+
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,7 +30,7 @@
                     </h2>
                     <hr/>
 
-                    <?php if (request()->get('type') == "pix") { ?>
+                    <?php if ($dataJson->billingType == "PIX") { ?>
                     <div class="panel-group">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -32,7 +40,7 @@
                             </div>
                             <div>
                                 <div class="panel-body text-center">
-                                   <img src="https://s.glbimg.com/jo/g1/f/original/2011/05/17/qrcode.jpg" width="200">
+                                   <img src="data:image/png;base64,<?=$dataJson->qrCode?>" width="200">
                                     <br><br>
                                     Chave copia e cola:
                                     <input class="form-control" type="text" value="00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-426655440000 5204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D">
@@ -42,7 +50,7 @@
                     </div>
                     <?php }
 
-                    if (request()->get('type') == "boleto") { ?>
+                    if ($dataJson->billingType == "BOLETO") { ?>
                     <div class="panel-group">
                         <div class="panel panel-default">
                             <div class="panel-heading">
@@ -52,13 +60,13 @@
                             </div>
                             <div>
                                 <div class="panel-body text-center">
-                                    <a href="#" target="_blank">
+                                    <a href="<?=$dataJson->linkBoleto?>" target="_blank">
                                         baixar boleto<br>
                                         <img src="https://nuvei.com/wp-content/uploads/2021/02/boleto-2.png" width="150">
                                     </a>
                                     <br><br>
                                     Código de barras:
-                                    <input class="form-control" type="text" value="00020126580014br.gov.bcb.pix0136123e4567-e12b-12d1-a456-426655440000 5204000053039865802BR5913Fulano de Tal6008BRASILIA62070503***63041D3D">
+                                    <input class="form-control" type="text" value="<?=$dataJson->barCode?>">
                                 </div>
                             </div>
                         </div>
@@ -66,7 +74,7 @@
                     <?php } ?>
 
                     <div class="panel-group text-center">
-                        <a href="./pedidos" class="btn btn-info">Meus pedidos</a>
+                        <a href="./" class="btn btn-info">voltar</a>
                     </div>
                 </div>
             </div>

@@ -26,6 +26,13 @@ class AsaasService
 
         $response = $response->json();
 
+        if (isset($response['errors']) && count($response['errors'])) {
+            return [
+                'error' => true,
+                'message' => $response['errors'][0]['description']
+            ];
+        }
+
         $user = new User();
         $user->name = $params['name'];
         $user->cpfCnpj = $params['cpfCnpj'];
@@ -33,7 +40,10 @@ class AsaasService
         $user->customer = $response['id'];
         $user->save();
 
-        return $response;
+        return [
+            'error' => false,
+            'data' => $response
+        ];
     }
 
     public function createPayment($params)
@@ -51,7 +61,19 @@ class AsaasService
                 'dueDate' => $params['dueDate']
             ]);
 
-        return $response->json();
+        $response = $response->json();
+
+        if (isset($response['errors']) && count($response['errors'])) {
+            return [
+                'error' => true,
+                'message' => $response['errors'][0]['description']
+            ];
+        }
+
+        return [
+            'error' => false,
+            'data' => $response
+        ];
     }
 
     public function getPixQrCodePayment($payment)
@@ -64,7 +86,19 @@ class AsaasService
         ])
             ->get($this->url . $endpoint);
 
-        return $response->json();
+        $response = $response->json();
+
+        if (isset($response['errors']) && count($response['errors'])) {
+            return [
+                'error' => true,
+                'message' => $response['errors'][0]['description']
+            ];
+        }
+
+        return [
+            'error' => false,
+            'data' => $response
+        ];
     }
 
     public function getBarCodePayment($payment)
@@ -77,6 +111,18 @@ class AsaasService
         ])
             ->get($this->url . $endpoint);
 
-        return $response->json();
+        $response = $response->json();
+
+        if (isset($response['errors']) && count($response['errors'])) {
+            return [
+                'error' => true,
+                'message' => $response['errors'][0]['description']
+            ];
+        }
+
+        return [
+            'error' => false,
+            'data' => $response
+        ];
     }
 }
