@@ -1,3 +1,5 @@
+Objetivo: O desafio é desenvolver um sistema de processamento de pagamentos integrado ao ambiente de homologação do Asaas, levando em consideração que o cliente deve acessar uma página onde irá selecionar a opção de pagamento entre Boleto, Cartão ou Pix
+
 # Configurando ambiente
 
 
